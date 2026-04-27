@@ -879,8 +879,18 @@ def main():
 
         threading.Thread(target=monitor_parent, daemon=True).start()
 
+    transport = os.getenv("MCP_TRANSPORT", "stdio")
     try:
-        mcp.run(transport="stdio", show_banner=False)
+        if transport == "stdio":
+            mcp.run(transport="stdio", show_banner=False)
+        else:
+            mcp.run(
+                transport=transport,
+                host=os.getenv("MCP_HOST", "0.0.0.0"),
+                port=int(os.getenv("MCP_PORT", "8000")),
+                path=os.getenv("MCP_PATH", "/mcp"),
+                show_banner=False,
+            )
     except KeyboardInterrupt:
         pass
     finally:

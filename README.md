@@ -139,6 +139,42 @@ claude mcp add-json grok-search --scope user '{
 | `GROK_RETRY_MAX_WAIT` | ❌ | `10` | 重试最大等待秒数 |
 
 
+### Docker 远程部署
+
+镜像默认以 `streamable-http` 方式监听 `0.0.0.0:8000/mcp`，适合部署到远程 Docker 服务器。
+
+```bash
+# 在项目根目录构建镜像
+docker build -t grok-search:latest .
+
+# 启动服务；Tavily / Firecrawl 为可选配置
+docker run -d \
+  --name grok-search \
+  --restart unless-stopped \
+  -p 8000:8000 \
+  -v grok-search-data:/data \
+  -e GROK_API_URL="https://your-api-endpoint.com/v1" \
+  -e GROK_API_KEY="your-grok-api-key" \
+  -e TAVILY_API_KEY="tvly-your-tavily-key" \
+  -e TAVILY_API_URL="https://api.tavily.com" \
+  grok-search:latest
+```
+
+如需调整监听参数，可覆盖以下环境变量：`MCP_TRANSPORT`（默认 `streamable-http`）、`MCP_HOST`、`MCP_PORT`、`MCP_PATH`。持久化数据保存在容器内 `/data`。
+
+### 远程客户端安装
+
+将 `http://your-docker-server:8000/mcp` 替换为你的公网域名或服务器地址后，在客户端机器执行：
+
+```bash
+claude mcp add-json grok-search --scope user '{
+  "type": "http",
+  "url": "http://your-docker-server:8000/mcp"
+}'
+```
+
+如果通过反向代理提供 HTTPS，建议使用 `https://your-domain.com/mcp`。
+
 ### 验证安装
 
 ```bash

@@ -144,7 +144,7 @@ claude mcp add-json grok-search --scope user '{
 镜像默认以 `streamable-http` 方式监听 `0.0.0.0:8000/mcp`，适合部署到远程 Docker 服务器。已发布的 GHCR 镜像支持 `linux/amd64` 和 `linux/arm64`：
 
 ```bash
-docker pull ghcr.io/denniszlei/groksearch:grok-with-tavily-clean
+docker pull ghcr.io/denniszlei/groksearch:latest
 ```
 
 使用既有镜像启动；Tavily / Firecrawl 为可选配置：
@@ -159,7 +159,7 @@ docker run -d \
   -e GROK_API_KEY="your-grok-api-key" \
   -e TAVILY_API_KEY="tvly-your-tavily-key" \
   -e TAVILY_API_URL="https://api.tavily.com" \
-  ghcr.io/denniszlei/groksearch:grok-with-tavily-clean
+  ghcr.io/denniszlei/groksearch:latest
 ```
 
 也可以在项目根目录使用 `docker compose` 部署：

@@ -1,6 +1,6 @@
 services:
   grok-search:
-    image: ghcr.io/denniszlei/groksearch:grok-with-tavily-clean
+    image: ghcr.io/denniszlei/groksearch:latest
     container_name: grok-search
     restart: unless-stopped
     ports:

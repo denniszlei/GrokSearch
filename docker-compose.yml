@@ -1,0 +1,21 @@
+services:
+  grok-search:
+    image: ghcr.io/denniszlei/groksearch:grok-with-tavily-clean
+    container_name: grok-search
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      GROK_API_URL: "https://your-api-endpoint.com/v1"
+      GROK_API_KEY: "your-grok-api-key"
+      TAVILY_API_KEY: "tvly-your-tavily-key"
+      TAVILY_API_URL: "https://api.tavily.com"
+      # Optional:
+      # GROK_MODEL: "grok-4-fast"
+      # FIRECRAWL_API_KEY: "your-firecrawl-api-key"
+      # FIRECRAWL_API_URL: "https://api.firecrawl.dev/v2"
+    volumes:
+      - grok-search-data:/data
+
+volumes:
+  grok-search-data:

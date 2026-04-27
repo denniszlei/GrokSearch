@@ -141,13 +141,15 @@ claude mcp add-json grok-search --scope user '{
 
 ### Docker 远程部署
 
-镜像默认以 `streamable-http` 方式监听 `0.0.0.0:8000/mcp`，适合部署到远程 Docker 服务器。
+镜像默认以 `streamable-http` 方式监听 `0.0.0.0:8000/mcp`，适合部署到远程 Docker 服务器。已发布的 GHCR 镜像支持 `linux/amd64` 和 `linux/arm64`：
 
 ```bash
-# 在项目根目录构建镜像
-docker build -t grok-search:latest .
+docker pull ghcr.io/denniszlei/groksearch:grok-with-tavily-clean
+```
 
-# 启动服务；Tavily / Firecrawl 为可选配置
+使用既有镜像启动；Tavily / Firecrawl 为可选配置：
+
+```bash
 docker run -d \
   --name grok-search \
   --restart unless-stopped \
@@ -157,7 +159,20 @@ docker run -d \
   -e GROK_API_KEY="your-grok-api-key" \
   -e TAVILY_API_KEY="tvly-your-tavily-key" \
   -e TAVILY_API_URL="https://api.tavily.com" \
-  grok-search:latest
+  ghcr.io/denniszlei/groksearch:grok-with-tavily-clean
+```
+
+也可以在项目根目录使用 `docker compose` 部署：
+
+```bash
+# 先编辑 docker-compose.yml 中的 GROK_API_URL / GROK_API_KEY 等配置
+docker compose up -d
+```
+
+如需自行构建本地镜像：
+
+```bash
+docker build -t grok-search:latest .
 ```
 
 如需调整监听参数，可覆盖以下环境变量：`MCP_TRANSPORT`（默认 `streamable-http`）、`MCP_HOST`、`MCP_PORT`、`MCP_PATH`。持久化数据保存在容器内 `/data`。
